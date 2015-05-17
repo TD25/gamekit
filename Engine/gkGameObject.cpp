@@ -379,7 +379,7 @@ const gkMatrix4& gkGameObject::getTransform(void)
 
 
 
-const gkVector3& gkGameObject::getPosition(void)
+const gkVector3& gkGameObject::getPosition(void) const 
 {
 	if (m_node != 0)
 		return m_node->getPosition();
@@ -573,7 +573,13 @@ void gkGameObject::setPosition(const gkVector3& v)
 		else if (m_ghost) {
 			m_ghost->updateTransform();
 		}
+		else
+			gkLogMessage("gkGameObject::setPosition(): cant set because\
+ m_character == m_rigidBody == m_ghost == 0");
 	}
+	else
+		gkLogMessage("gkGameObject::setPosition(): cant set because\
+ m_node == 0");
 }
 
 
@@ -792,7 +798,7 @@ void gkGameObject::translate(const gkVector3& dloc, int tspace)
 		}
 		else if (m_ghost)
 		{
-					m_ghost->updateTransform();
+			m_ghost->updateTransform();
 		}
 	}
 }
@@ -866,9 +872,24 @@ void gkGameObject::applyForce(const gkVector3& v, int tspace)
 		m_rigidBody->applyForce(v, tspace);
 }
 
+void gkGameObject::applyForceToPos(const gkVector3& v, const gkVector3& relPos)
+{
+	if (isImmovable())
+		return;
+	if (m_rigidBody != 0)
+		m_rigidBody->applyForceToPos(v, relPos);
+}
+
+void gkGameObject::applyImpulse(const gkVector3& imp, const gkVector3& relPos)
+{
+	if (isImmovable())
+		return;
+	if (m_rigidBody != 0)
+		m_rigidBody->applyImpulse(imp, relPos);
+}
 
 
-gkVector3 gkGameObject::getLinearVelocity(void)
+gkVector3 gkGameObject::getLinearVelocity(void) const 
 {
 	if (isImmovable())
 		return gkVector3::ZERO;
@@ -881,7 +902,7 @@ gkVector3 gkGameObject::getLinearVelocity(void)
 
 
 
-gkVector3 gkGameObject::getAngularVelocity()
+gkVector3 gkGameObject::getAngularVelocity() const
 {
 	if (isImmovable())
 		return gkVector3::ZERO;

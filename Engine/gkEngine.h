@@ -46,8 +46,7 @@ public:
 public:
 	gkEngine(gkUserDefs* otherDefs = 0);
 	~gkEngine();
-
-	void initialize();
+	void initialize(); 
 	void finalize(void);
 	void run(void);
 

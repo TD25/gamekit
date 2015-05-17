@@ -71,6 +71,7 @@ public:
 
 
 	gkPhysicsProperties& getProperties(void);
+	gkPhysicsProperties getProperties(void) const;
 
 	void enableContactProcessing(bool v);
 

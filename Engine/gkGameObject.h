@@ -162,7 +162,7 @@ public:
 
 	const gkTransformState&  getTransformState(void);
 	const gkMatrix4&         getTransform(void);
-	const gkVector3&         getPosition(void);
+	const gkVector3&         getPosition(void) const ;
 	const gkQuaternion&      getOrientation(void);
 	const gkVector3&         getScale(void);
 	gkEuler                  getRotation(void);
@@ -198,10 +198,13 @@ public:
 
 	void        applyTorque(const gkVector3& t, int tspace = TRANSFORM_PARENT);
 	void        applyForce(const gkVector3& f, int tspace = TRANSFORM_PARENT);
+	///applies force to relative position of the body
+	void		applyForceToPos(const gkVector3& f, const gkVector3& relPos);
+	void		applyImpulse(const gkVector3& imp, const gkVector3& relPos);
 	void        setLinearVelocity(const gkVector3& linv, int tspace = TRANSFORM_PARENT);
 	void        setAngularVelocity(const gkVector3& angv, int tspace = TRANSFORM_PARENT);
-	gkVector3   getLinearVelocity(void);
-	gkVector3   getAngularVelocity(void);
+	gkVector3   getLinearVelocity(void) const;
+	gkVector3   getAngularVelocity(void) const ;
 
 #ifdef OGREKIT_USE_NNODE
 	void attachLogic(gkLogicTree* tree);
@@ -255,12 +258,12 @@ public:
 
 
 
-	GK_INLINE bool   isStaticGeometry(void)   {return (m_flags & GK_STATIC_GEOM) != 0;}
-	GK_INLINE bool   isImmovable(void)        {return (m_flags & GK_IMMOVABLE) != 0;}
+	GK_INLINE bool   isStaticGeometry(void) const   {return (m_flags & GK_STATIC_GEOM) != 0;}
+	GK_INLINE bool   isImmovable(void) const        {return (m_flags & GK_IMMOVABLE) != 0;}
 	
 	GK_INLINE void setVisible(bool v)          {getNode()->setVisible(v, false);}
 	GK_INLINE void setVisibleRecursive(bool v) {getNode()->setVisible(v, true);}
-	GK_INLINE bool getVisible()                {return getNode()->getAttachedObject(0)->getVisible();}
+	GK_INLINE bool getVisible()		{return getNode()->getAttachedObject(0)->getVisible();}
 
 
 	// Grouping

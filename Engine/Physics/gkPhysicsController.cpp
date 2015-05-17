@@ -102,12 +102,17 @@ bool gkPhysicsController::isStaticObject(void)
 }
 
 
-gkPhysicsProperties& gkPhysicsController::getProperties(void)
+gkPhysicsProperties& gkPhysicsController::getProperties(void) 
 {
 	GK_ASSERT(m_object);
 	return m_props;
 }
 
+gkPhysicsProperties gkPhysicsController::getProperties(void) const
+{
+	GK_ASSERT(m_object);
+	return m_props;
+}
 
 gkContactInfo::Array& gkPhysicsController::getContacts(void)
 {

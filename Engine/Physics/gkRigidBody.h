@@ -49,12 +49,15 @@ public:
 
 	void        applyTorque(const gkVector3& t, int tspace = TRANSFORM_PARENT);
 	void        applyForce(const gkVector3& f, int tspace = TRANSFORM_PARENT);
+	///applies force to relative position of the body
+	void		applyForceToPos(const gkVector3& f, const gkVector3& relPos);
+	void		applyImpulse(const gkVector3& imp, const gkVector3& relPos);
 
 
 	void        setLinearVelocity(const gkVector3& linv, int tspace = TRANSFORM_PARENT);
 	void        setAngularVelocity(const gkVector3& angv, int tspace = TRANSFORM_PARENT);
-	gkVector3   getLinearVelocity(void);
-	gkVector3   getAngularVelocity(void);
+	gkVector3   getLinearVelocity(void) const;
+	gkVector3   getAngularVelocity(void) const ;
 
 	GK_INLINE int setActivationState(int newActivationState)
 	{

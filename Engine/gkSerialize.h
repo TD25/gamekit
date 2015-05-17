@@ -401,6 +401,7 @@ public:
 		    m_maxVel(0.f),
 		    m_restitution(0.f),
 		    m_friction(0.5f),
+			m_rollingFriction(0.1),
 			m_colMask(-2),
 			m_colGroupMask(-2),
 			m_charStepHeight(-1),
@@ -423,6 +424,7 @@ public:
 	gkScalar    m_maxVel;
 	gkScalar    m_restitution;
 	gkScalar    m_friction;
+	gkScalar	m_rollingFriction;
 	CollisionMask m_colMask;
 	CollisionMask m_colGroupMask;
 	gkScalar m_charStepHeight;

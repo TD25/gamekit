@@ -126,6 +126,7 @@ void gkRigidBody::create(void)
 
 	m_body->setFriction(phy.m_friction);
 	m_body->setRestitution(phy.m_restitution);
+	m_body->setRollingFriction(phy.m_rollingFriction);
 	m_body->setWorldTransform(tstate.toTransform());
 
 	if (!phy.isDosser())
@@ -407,7 +408,7 @@ void gkRigidBody::applyForce(const gkVector3& v, int tspace)
 
 
 
-gkVector3 gkRigidBody::getLinearVelocity(void)
+gkVector3 gkRigidBody::getLinearVelocity(void) const 
 {
 	if (m_suspend || m_body->isStaticOrKinematicObject() || !m_body)
 		return gkVector3(0, 0, 0);
@@ -416,7 +417,7 @@ gkVector3 gkRigidBody::getLinearVelocity(void)
 }
 
 
-gkVector3 gkRigidBody::getAngularVelocity()
+gkVector3 gkRigidBody::getAngularVelocity() const 
 {
 	// only rigid bodies
 	if (m_suspend || !getProperties().isRigid() || !m_body)
@@ -479,4 +480,43 @@ void gkRigidBody::recalLocalInertia(void)
 	btVector3 localInertia;
 	m_shape->calculateLocalInertia(mass, localInertia);
 	m_body->setMassProps(mass, localInertia);
+}
+
+
+void gkRigidBody::applyForceToPos(const gkVector3& f, const gkVector3& relPos)
+{
+	if (m_suspend) // block
+		return;
+
+	if (!m_body)
+		return;
+
+	// only dynamic bodies
+	if (m_body->isStaticOrKinematicObject())
+		return;
+
+	if (f.squaredLength() > GK_EPSILON * GK_EPSILON)
+		m_body->activate();
+
+	m_body->applyForce(btVector3(f.x, f.y, f.z), 
+			btVector3(relPos.x, relPos.y, relPos.z));
+}
+
+void gkRigidBody::applyImpulse(const gkVector3& imp, const gkVector3& relPos)
+{
+	if (m_suspend) // block
+		return;
+
+	if (!m_body)
+		return;
+
+	// only dynamic bodies
+	if (m_body->isStaticOrKinematicObject())
+		return;
+
+	if (imp.squaredLength() > GK_EPSILON * GK_EPSILON)
+		m_body->activate();
+
+	m_body->applyImpulse(btVector3(imp.x, imp.y, imp.z),
+			btVector3(relPos.x, relPos.y, relPos.z));
 }
